@@ -2,6 +2,17 @@
 
 ![Welcome Illustration](assets/welcome.jpg "Welcome Illustration")
 
+# Index
+
+1. [Project Overview](#project-overview)
+2. [Installation](#installation)
+3. [Data Preparation](#data-preparation)
+4. [Training](#training)
+5. [Sampling](#sampling)
+6. [Credits](#credits)
+
+## Project Overview
+
 A simple Transformer implementantion for training and evaluating a
 Transformer model. The model can be trained on a single GPU in 
 a few hours in consumer GPUs. The repository is structured as follows:
