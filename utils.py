@@ -1,13 +1,22 @@
+import torch
 import random
 from config import SPECIAL_TOKENS
+
 
 ###################################################################################
 ################################## DATA GENERATION ################################
 ###################################################################################
-def calculate_total_possibilities(characters, max_sequence_len):
+def calculate_total_possibilities(characters: list[str], max_sequence_len: int) -> int:
     """
     Calculate the total number of possibilities for a given characters and
     maximum sentence length
+
+    Args:
+        characters (list[str]): The characters to consider
+        max_sequence_len (int): The maximum sequence length
+
+    Returns:
+        int: The total number of possibilities
     """
     total_possibilities = 0
 
@@ -17,11 +26,20 @@ def calculate_total_possibilities(characters, max_sequence_len):
     return total_possibilities
 
 
-def generate_sentence_pairs(vocabulary, sentence_len):
+def generate_sentence_pairs(vocabulary: dict[str, int], sentence_len: int):
+    """Generate a sentence, the sorted version of the sentence and the target
+
+    Args:
+        vocabulary (dict): The vocabulary
+        sentence_len (int): The sentence length
+
+    Returns:
+        tuple: The source sentence, the sorted sentence and the target sentence
+    """
     # Ensure that special tokens are in the vocabulary
     for token in SPECIAL_TOKENS:
         assert token in vocabulary, f"{token} not in vocabulary"
-    
+
     # We know that we need to reserve 2 positions for "<s>" and "<e>"
     # The "real" sentence length is AT MOST sentence_len - 2
     # the remaining positions are filled with "PAD"
@@ -47,8 +65,16 @@ def tokenize_sentence(sentence, vocabulary):
     return [vocabulary[token] for token in sentence]
 
 
-def detokenize_sentence(sentence, ivocabulary):
-    """
-    Detokenize a sentence using the inverse vocabulary
+def detokenize_sentence(
+    sentence: torch.Tensor, ivocabulary: dict[int, str]
+) -> list[str]:
+    """Detokenize a sentence using the inverse vocabulary
+
+    Args:
+        sentence (torch.Tensor): The sentence to detokenize
+        ivocabulary (dict): The inverse vocabulary
+
+    Returns:
+        list[str]: The detokenized sentence
     """
     return [ivocabulary[token] for token in sentence]

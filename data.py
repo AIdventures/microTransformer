@@ -4,16 +4,15 @@ import torch
 from torch.utils.data import Dataset
 from config import VOCABULARY, NORMAL_TOKENS, SENTENCE_LEN
 from utils import (
-    calculate_total_possibilities, generate_sentence_pairs, tokenize_sentence
+    calculate_total_possibilities,
+    generate_sentence_pairs,
+    tokenize_sentence,
 )
 
 ###################################################################################
 ################################## CONFIGURATION ##################################
 ###################################################################################
-EVAL_DFS = {
-    "val": pd.read_csv("val.csv"),
-    "test": pd.read_csv("test.csv")
-}
+EVAL_DFS = {"val": pd.read_csv("val.csv"), "test": pd.read_csv("test.csv")}
 # Take an example and check sentence length
 example = ast.literal_eval(EVAL_DFS["val"].iloc[0]["src"])
 assert len(example) == SENTENCE_LEN, "The sentence length is not correct (val)"
@@ -31,11 +30,12 @@ TRAIN_POSSIBILITIES = TOTAL_POSSIBILITIES - VAL_POSSIBILITIES - TEST_POSSIBILITI
 NUM_POSSIBILITIES = {
     "train": TRAIN_POSSIBILITIES,
     "val": VAL_POSSIBILITIES,
-    "test": TEST_POSSIBILITIES
+    "test": TEST_POSSIBILITIES,
 }
 
 VAL_SRCS = [ast.literal_eval(v) for v in EVAL_DFS["val"]["src"].values]
 TEST_SRCS = [ast.literal_eval(v) for v in EVAL_DFS["test"]["src"].values]
+
 
 class CharactersDataset(Dataset):
     def __init__(self, split):
@@ -50,7 +50,7 @@ class CharactersDataset(Dataset):
         """
         self.split = split
         self.num_samples = NUM_POSSIBILITIES[split]
-            
+
     def __len__(self):
         return self.num_samples
 
@@ -67,10 +67,11 @@ class CharactersDataset(Dataset):
         return {
             "src": torch.tensor(t_src),
             "tgt_shifted": torch.tensor(t_tgt_shifted),
-            "tgt": torch.tensor(t_tgt)
+            "tgt": torch.tensor(t_tgt),
         }
-    
+
     def generate_train_sample(self):
+        """Generate a training sample"""
         is_generated = False
         while not is_generated:
             src, tgt_shifted, tgt = generate_sentence_pairs(VOCABULARY, SENTENCE_LEN)
@@ -78,8 +79,9 @@ class CharactersDataset(Dataset):
                 is_generated = True
 
         return src, tgt_shifted, tgt
-    
+
     def load_eval_sample(self, idx):
+        """Load an evaluation sample"""
         src, tgt_shifted, tgt = EVAL_DFS[self.split].iloc[idx].values
         src = ast.literal_eval(src)
         tgt_shifted = ast.literal_eval(tgt_shifted)
