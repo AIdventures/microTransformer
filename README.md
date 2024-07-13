@@ -14,8 +14,8 @@
 ## Project Overview
 
 A simple Transformer implementantion for training and evaluating a
-Transformer model. The model can be trained on a single GPU in 
-a few hours in consumer GPUs. The repository is structured as follows:
+Transformer model. The model can be trained on a single consumer GPU in 
+a few hours. The repository is structured as follows:
 
 ```
 ├── config.py <- Transformer configuration and vocabulary
@@ -33,7 +33,7 @@ a few hours in consumer GPUs. The repository is structured as follows:
 └── utils.py <- data sentence generation, tokenization and detokenization
 ```
 
-Our model is based on the raw implementation of the Transformer model, with the encoder and decoder parts. The task we will be working on is the sorting of a sequence of characters. For example, the sequence "ABCB" will be sorted as "ABBC". The vocabulary and the sentence length can be changed in the `config.py` file. You can caculate the number of possible sequences with `calculate_total_possibilities` from `utils.py`.
+microTransformer is based on the raw implementation of the Transformer model, with the encoder and decoder parts. The task we will be working on is the sorting of a sequence of characters. For example, the sequence "ABCB" will be sorted as "ABBC". The vocabulary and the sentence length can be changed in the `config.py` file. You can caculate the number of possible sequences with `calculate_total_possibilities` from `utils.py`.
 
 During the training you will see how the model converges: the loss will decrease and the accuracy will increase.
 
